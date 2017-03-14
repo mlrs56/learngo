@@ -32,7 +32,7 @@ func handleClient(conn net.Conn) {
 
 func checkError(err error) {
 	if err != nil {
-		fmt.Println(os.Stderr, "Fatal error: %s", err.Error())
+		fmt.Println(os.Stderr, "Fatal  error: %s", err.Error())
 		os.Exit(1)
 	}
 }
