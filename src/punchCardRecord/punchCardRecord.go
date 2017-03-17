@@ -10,7 +10,12 @@ package main
 //    PRIMARY KEY (`id`)
 //  )  ENGINE=MYISAM COMMENT='打卡记录' ROW_FORMAT=DEFAULT CHARSET=utf8;
 
-// SELECT r.employee_id,r.day,DAYOFWEEK(FROM_UNIXTIME(MIN(r.record_tm)))-1 AS '星期',FROM_UNIXTIME(MIN(r.record_tm)) AS '上班时间',FROM_UNIXTIME(MAX(r.record_tm)) AS '下班时间' FROM RECORD r WHERE r.record_tm >UNIX_TIMESTAMP('2017-03-01') AND r.record_tm<UNIX_TIMESTAMP('2017-03-31 23:59') GROUP BY r.employee_id,r.day;
+// SELECT  r.employee_id,DATE_FORMAT(FROM_UNIXTIME(MIN(r.record_tm)),'%Y-%m-%d') AS '日期',
+// 	DAYOFWEEK(FROM_UNIXTIME(MIN(r.record_tm)))-1 AS '星期',
+// 	FROM_UNIXTIME(MIN(r.record_tm)) AS '上班时间',
+// 	FROM_UNIXTIME(MAX(r.record_tm)) AS '下班时间'
+//   FROM RECORD r
+//   WHERE r.record_tm >UNIX_TIMESTAMP('2017-03-01') AND r.record_tm<UNIX_TIMESTAMP('2017-03-31 23:59') GROUP BY r.employee_id,r.day;
 
 import (
 	"database/sql"
@@ -21,14 +26,16 @@ import (
 
 func main() {
 
-	db, err := sql.Open("mysql", "root:root@/attendanceRecord?charset=utf8")
+	// fmt.Println(time.Now().YearDay())
+
+	db, err := sql.Open("mysql", "root:root@tcp(172.17.80.6:3306)/attendanceRecord?charset=utf8")
 	checkErr(err)
 
 	//插入数据
 	stmt, err := db.Prepare("INSERT `RECORD`(`employee_id`,`record_tm`,`day`) VALUES ( ?,?,?)")
 	checkErr(err)
 
-	res, err := stmt.Exec("904", time.Now().Unix(), time.Now().Day())
+	res, err := stmt.Exec("904", time.Now().Unix(), time.Now().YearDay())
 	checkErr(err)
 
 	fmt.Println(res, "success ok")
