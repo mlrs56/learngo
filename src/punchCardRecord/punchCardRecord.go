@@ -28,7 +28,7 @@ func main() {
 
 	// fmt.Println(time.Now().YearDay())
 
-	db, err := sql.Open("mysql", "root:root@tcp(172.17.80.6:3306)/attendanceRecord?charset=utf8")
+	db, err := sql.Open("mysql", "root:root@tcp(172.17.80.3:3306)/attendanceRecord?charset=utf8")
 	checkErr(err)
 
 	//插入数据
