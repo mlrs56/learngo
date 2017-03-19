@@ -35,10 +35,10 @@ func main() {
 	stmt, err := db.Prepare("INSERT `RECORD`(`employee_id`,`record_tm`,`day`) VALUES ( ?,?,?)")
 	checkErr(err)
 
-	res, err := stmt.Exec("904", time.Now().Unix(), time.Now().YearDay())
+	_, err = stmt.Exec("904", time.Now().Unix(), time.Now().YearDay())
 	checkErr(err)
 
-	fmt.Println(res, "success ok")
+	fmt.Println("success ok")
 
 	db.Close()
 
